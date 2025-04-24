@@ -1,6 +1,6 @@
 import express from "express";
 
-const outer = express.Router();
+const router = express.Router();
 
 // 회원가입
 
