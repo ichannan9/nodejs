@@ -22,18 +22,22 @@ router.get("/", isAuth, postController.getPosts);
 // GET
 // http://127.0.0.1:8080/posts/:id
 router.get("/:id", isAuth, postController.getPost);
+
 // 포스트 쓰기
 // POST
 // http://127.0.0.1:8080/posts
 // json 형태로 입력 후 저장
 router.post("/", validatePost, isAuth, postController.createPost);
+
 // 포스트 수정하기
 // PUT
 // http://127.0.0.1:8080/posts/:id
 // json 형태로 입력 후 저장
 router.put("/:id", validatePost, isAuth, postController.updatePost);
+
 // 포스트 삭제하기
 // DELETE
 // http://127.0.0.1:8080/posts/:id
-router.delete("/:id", postController.deletePost);
+router.delete("/:id", isAuth, postController.deletePost);
+
 export default router;

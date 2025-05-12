@@ -7,15 +7,16 @@
     - 인증정보를 담는 표준 위치가 Authorization 헤더임
 
     Bearer
-    - Authorization에 실을 수 있는 방식(타입) 중 하나 
-    - Bearer는 토큰(token)을 가지고 있다는 것 자체로 인증 함
-        Authorization: Bearer <토큰>
+    - Authorization에 실을 수 있는 방식(타입) 중 하나
+    - Bearer는 토큰(token)을 가지고 있다는 것 자체로 인증함
+        Authorization: Bearer <토큰>       
 */
+
 import jwt from "jsonwebtoken";
 import * as authRepository from "../data/auth.mjs";
 import { config } from "../config.mjs";
 
-const AUTH_ERROR = { message: "인증 에러" };
+const AUTH_ERROR = { message: "인증에러" };
 
 export const isAuth = async (req, res, next) => {
   const authHeader = req.get("Authorization");
@@ -28,20 +29,20 @@ export const isAuth = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
   console.log(token);
 
-  jwt.verify(token, config.jwt.secretkey, async (error, decoded) => {
+  jwt.verify(token, config.jwt.secretKey, async (error, decoded) => {
     if (error) {
       console.log("토큰 에러");
       return res.status(401).json(AUTH_ERROR);
     }
     console.log(decoded.id);
-    const user = await authRepository.findById(decoded.id);
+    const user = await authRepository.findByid(decoded.id);
     if (!user) {
       console.log("아이디 없음");
       return res.status(401).json(AUTH_ERROR);
     }
     console.log("user.id: ", user.id);
     console.log("user.userid: ", user.userid);
-    req.userid = user.userid;
+    req.id = user.id;
     next();
   });
 };
